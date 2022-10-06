@@ -1,5 +1,6 @@
 package com.example.rest_api_with_jwt.util;
 
+import com.example.rest_api_with_jwt.app.base.dto.RsData;
 import com.example.rest_api_with_jwt.app.config.AppConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,10 +39,13 @@ public class Util {
     }
 
 
-
     public static class spring {
-        public static <T> ResponseEntity<T> responseEntityOf(HttpHeaders headers) {
-            return new ResponseEntity<>(null, headers, HttpStatus.OK);
+        public static <T> ResponseEntity<RsData> responseEntityOf(RsData<T> rsData) {
+            return responseEntityOf(rsData, null);
+        }
+
+        public static <T> ResponseEntity<RsData> responseEntityOf(RsData<T> rsData, HttpHeaders headers) {
+            return new ResponseEntity<>(rsData, headers, rsData.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
         }
     }
 }
