@@ -40,7 +40,6 @@ public class MemberService {
         claims.put("username", postLoginReq.getUsername());
         claims.put("password", postLoginReq.getPassword());
         claims.put("authorities", Arrays.asList(
-
                 new SimpleGrantedAuthority("MEMBER"))
         );
         postLoginRes.setAccessToken(jwtProvider.generateAccessToken(claims, 60 * 60 * 5));

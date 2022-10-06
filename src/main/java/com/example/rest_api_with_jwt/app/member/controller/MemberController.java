@@ -6,13 +6,16 @@ import com.example.rest_api_with_jwt.app.member.dto.PostLoginReq;
 import com.example.rest_api_with_jwt.app.member.dto.PostLoginRes;
 import com.example.rest_api_with_jwt.app.member.entity.Member;
 import com.example.rest_api_with_jwt.app.member.service.MemberService;
+import com.example.rest_api_with_jwt.app.security.entity.MemberContext;
 import com.example.rest_api_with_jwt.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +27,12 @@ import javax.servlet.http.HttpServletResponse;
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+
+    @GetMapping("/test")
+    public String test(@AuthenticationPrincipal MemberContext memberContext) {
+        return "안녕" + memberContext;
+    }
     @PostMapping(value="/member/login")
     public ResponseEntity<RsData> Login(@RequestBody PostLoginReq postLoginReq){
         if(postLoginReq.isNotValid()){
