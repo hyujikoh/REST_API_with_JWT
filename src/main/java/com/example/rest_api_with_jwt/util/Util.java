@@ -15,6 +15,27 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class Util {
+
+    public static <K, V> Map<K, V> mapOf(Object... args) {
+        Map<K, V> map = new LinkedHashMap<>();
+
+        int size = args.length / 2;
+
+        for (int i = 0; i < size; i++) {
+            int keyIndex = i * 2;
+            int valueIndex = keyIndex + 1;
+
+            K key = (K) args[keyIndex];
+            V value = (V) args[valueIndex];
+
+            map.put(key, value);
+        }
+
+        return map;
+    }
+
+
+
     private static ObjectMapper getObjectMapper() {
         return (ObjectMapper) AppConfig.getContext().getBean("objectMapper");
     }
