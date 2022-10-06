@@ -5,6 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,6 +34,14 @@ public class Util {
             } catch (JsonProcessingException e) {
                 return null;
             }
+        }
+    }
+
+
+
+    public static class spring {
+        public static <T> ResponseEntity<T> responseEntityOf(HttpHeaders headers) {
+            return new ResponseEntity<>(null, headers, HttpStatus.OK);
         }
     }
 }

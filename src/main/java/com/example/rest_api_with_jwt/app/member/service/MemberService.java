@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +46,9 @@ public class MemberService {
         postLoginRes.setAccessToken(jwtProvider.generateAccessToken(claims, 60 * 60 * 5));
         return postLoginRes;
 
+    }
+
+    public Optional<Member> findByUsername(String username) {
+        return memberRepository.findByUsername(username);
     }
 }
