@@ -26,6 +26,7 @@ import java.util.Map;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private final MemberService memberService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String bearerToken = request.getHeader("Authorization");
@@ -36,9 +37,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             // 1차 체크(정보가 변조되지 않았는지 체크)
             if (jwtProvider.verify(token)) {
                 Map<String, Object> claims = jwtProvider.getClaims(token);
-
                 // 캐시(레디스)를 통해서
-                Member member = memberService.findByUsername((String) claims.get("username")).get();
+                Member member = memberService.getByUsername__cached((String) claims.get("username"));
 
                 // 2차 체크(화이트리스트에 포함되는지)
                 if ( memberService.verifyWithWhiteList(member, token) ) {

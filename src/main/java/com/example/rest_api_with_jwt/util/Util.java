@@ -25,6 +25,31 @@ public class Util {
         }
     }
 
+    private static ObjectMapper getObjectMapper() {
+        return (ObjectMapper) AppConfig.getContext().getBean("objectMapper");
+    }
+
+    public static class json {
+
+        public static Object toStr(Map<String, Object> map) {
+            try {
+                return getObjectMapper().writeValueAsString(map);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        public static Map<String, Object> toMap(String jsonStr) {
+            try {
+                return getObjectMapper().readValue(jsonStr, LinkedHashMap.class);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     public static <K, V> Map<K, V> mapOf(Object... args) {
         Map<K, V> map = new LinkedHashMap<>();
 
@@ -43,33 +68,8 @@ public class Util {
         return map;
     }
 
-
-
-    private static ObjectMapper getObjectMapper() {
-        return (ObjectMapper) AppConfig.getContext().getBean("objectMapper");
-    }
-
-    public static class json {
-
-        public static Object toStr(Map<String, Object> map) {
-            try {
-                return getObjectMapper().writeValueAsString(map);
-            } catch (JsonProcessingException e) {
-                return null;
-            }
-        }
-
-        public static Map<String, Object> toMap(String jsonStr) {
-            try {
-                return getObjectMapper().readValue(jsonStr, LinkedHashMap.class);
-            } catch (JsonProcessingException e) {
-                return null;
-            }
-        }
-    }
-
-
     public static class spring {
+
         public static <T> ResponseEntity<RsData> responseEntityOf(RsData<T> rsData) {
             return responseEntityOf(rsData, null);
         }
@@ -77,6 +77,7 @@ public class Util {
         public static <T> ResponseEntity<RsData> responseEntityOf(RsData<T> rsData, HttpHeaders headers) {
             return new ResponseEntity<>(rsData, headers, rsData.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
         }
+
         public static HttpHeaders httpHeadersOf(String... args) {
             HttpHeaders headers = new HttpHeaders();
 

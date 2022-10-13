@@ -25,6 +25,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
+
     public Member join(String username, String password, String email) {
         Member member = Member.builder()
                 .username(username)
@@ -35,22 +36,6 @@ public class MemberService {
         memberRepository.save(member);
 
         return member;
-    }
-
-    public PostLoginRes Login(PostLoginReq postLoginReq) {
-
-        PostLoginRes postLoginRes = new PostLoginRes();
-        postLoginRes.setUsername(postLoginReq.getUsername());
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", postLoginReq.getUsername());
-        claims.put("password", postLoginReq.getPassword());
-        claims.put("authorities", Arrays.asList(
-                new SimpleGrantedAuthority("MEMBER"))
-        );
-        postLoginRes.setAccessToken(jwtProvider.generateAccessToken(claims, 60 * 60 * 5));
-        return postLoginRes;
-
     }
 
     public Optional<Member> findByUsername(String username) {
@@ -102,5 +87,11 @@ public class MemberService {
     public String getName(Person p, int random) {
         System.out.println("== getName 실행됨 ==");
         return p.getName();
+    }
+
+
+    @Cacheable("member")// 멤버이름을 통한 내용을 캐시로 저장
+    public Member getByUsername__cached(String username) {
+        return findByUsername(username).orElse(null);
     }
 }

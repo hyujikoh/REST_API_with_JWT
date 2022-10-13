@@ -10,6 +10,7 @@ import com.example.rest_api_with_jwt.app.security.entity.MemberContext;
 import com.example.rest_api_with_jwt.util.Util;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Slf4j
 @Tag(name = "MemberController", description = "로그인 기능과 로그인 된 회원의 정보를 제공 기능을 담당하는 컨트롤러")
 public class MemberController {
     private final MemberService memberService;
@@ -49,26 +51,26 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<RsData> login(@Valid @RequestBody PostLoginReq postLoginReq) {
         {
-            if (postLoginReq.isNotValid()) {
-                return Util.spring.responseEntityOf(RsData.of("F-1", "로그인 정보가 올바르지 않습니다."));
-            }
             Member member = memberService.findByUsername(postLoginReq.getUsername()).orElse(null);
 
             if (member == null) {
                 return Util.spring.responseEntityOf(RsData.of("F-2", "일치하는 회원이 존재하지 않습니다."));
             }
+
             if (passwordEncoder.matches(postLoginReq.getPassword(), member.getPassword()) == false) {
                 return Util.spring.responseEntityOf(RsData.of("F-3", "비밀번호가 일치하지 않습니다."));
             }
-            String accessToken = "JWT_Access_Token";
 
-            PostLoginRes postLoginRes = memberService.Login(postLoginReq);
+            log.debug("Util.json.toStr(member.getAccessTokenClaims()) : " + Util.json.toStr(member.getAccessTokenClaims()));
+
+            String accessToken = memberService.genAccessToken(member);
+
             return Util.spring.responseEntityOf(
                     RsData.of(
                             "S-1",
                             "로그인 성공, Access Token을 발급합니다.",
                             Util.mapOf(
-                                    "accessToken", postLoginRes.getAccessToken()
+                                    "accessToken", accessToken
                             )
                     ),
                     Util.spring.httpHeadersOf("Authentication", accessToken)

@@ -29,7 +29,6 @@ public class Member extends BaseEntity {
     @JsonIgnore
     private String password;
     private String email;
-
     @Column(columnDefinition = "TEXT")
     private String accessToken;
 
@@ -37,16 +36,12 @@ public class Member extends BaseEntity {
         super(id);
     }
 
-
-
     public static Member fromJwtClaims(Map<String, Object> jwtClaims) {
         long id = (long)(int)jwtClaims.get("id");
         LocalDateTime createDate = Util.date.bitsToLocalDateTime((List<Integer>)jwtClaims.get("createDate"));
         LocalDateTime modifyDate = Util.date.bitsToLocalDateTime((List<Integer>)jwtClaims.get("modifyDate"));
         String username = (String)jwtClaims.get("username");
         String email = (String)jwtClaims.get("email");
-
-
 
         return Member
                 .builder()
@@ -57,6 +52,7 @@ public class Member extends BaseEntity {
                 .email(email)
                 .build();
     }
+
     // 현재 회원이 가지고 있는 권한들을 List<GrantedAuthority> 형태로 리턴
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
