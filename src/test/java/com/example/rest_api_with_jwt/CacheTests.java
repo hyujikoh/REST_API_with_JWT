@@ -76,7 +76,7 @@ class CacheTests {
 
 
     @Test
-    @DisplayName("여러 캐시")
+    @DisplayName("매개변수를 가진 캐싱")
     void t4() throws Exception {
         int re = memberService.cachePlus(3,6);// 9 // 실행(캐시생성)
         System.out.println(re);
