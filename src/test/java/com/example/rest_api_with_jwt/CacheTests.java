@@ -87,8 +87,5 @@ class CacheTests {
         re=  memberService.cachePlus(7,2);// 7 // 캐시사용
 
         System.out.println(re);
-
-
-
     }
 }
