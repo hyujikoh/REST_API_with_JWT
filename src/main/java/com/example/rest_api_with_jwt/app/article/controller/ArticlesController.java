@@ -6,6 +6,7 @@ import com.example.rest_api_with_jwt.app.article.service.ArticleService;
 import com.example.rest_api_with_jwt.app.base.dto.RsData;
 import com.example.rest_api_with_jwt.app.security.entity.MemberContext;
 import com.example.rest_api_with_jwt.util.Util;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -56,8 +57,10 @@ public class ArticlesController {
     }
 
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<RsData> delete(@PathVariable Long id, @AuthenticationPrincipal MemberContext memberContext) {
+    public ResponseEntity<RsData> delete(
+            @PathVariable Long id,
+            @Parameter(hidden = true) @AuthenticationPrincipal MemberContext memberContext
+    ) {
         Article article = articleService.findById(id).orElse(null);
 
         if (article == null) {
