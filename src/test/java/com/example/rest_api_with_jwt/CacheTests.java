@@ -62,5 +62,15 @@ class CacheTests {
 
         rs = memberService.getCachedInt();
         System.out.println(rs);
+
+        rs = memberService.getCachedInt();
+        System.out.println(rs);
+
+        rs = memberService.putCachedInt();
+        System.out.println(rs);
+
+
+        rs = memberService.getCachedInt();
+        System.out.println(rs);
     }
 }

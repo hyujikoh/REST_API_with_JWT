@@ -7,6 +7,7 @@ import com.example.rest_api_with_jwt.app.member.repository.MemberRepository;
 import com.example.rest_api_with_jwt.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -81,5 +82,11 @@ public class MemberService {
 
     @CacheEvict("key1") // 삭제
     public void deleteCacheKey1() {
+    }
+
+    @CachePut("key1")
+    public int putCachedInt() {
+        System.out.println("key1 수정");
+        return 10;
     }
 }
