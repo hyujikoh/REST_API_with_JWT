@@ -89,4 +89,10 @@ public class MemberService {
         System.out.println("key1 수정");
         return 10;
     }
+
+    @Cacheable("plus")
+    public int cachePlus(int i, int i1) {
+        System.out.println("a+ b " + i+i1);
+        return i+i1;
+    }
 }

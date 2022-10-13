@@ -73,4 +73,22 @@ class CacheTests {
         rs = memberService.getCachedInt();
         System.out.println(rs);
     }
+
+
+    @Test
+    @DisplayName("여러 캐시")
+    void t4() throws Exception {
+        int re = memberService.cachePlus(3,6);// 9 // 실행(캐시생성)
+        System.out.println(re);
+        re= memberService.cachePlus(3,6);// 9 // 캐시사용
+        System.out.println(re);
+        re= memberService.cachePlus(7,2);// 7 // 실행(캐시생성)
+        System.out.println(re);
+        re=  memberService.cachePlus(7,2);// 7 // 캐시사용
+
+        System.out.println(re);
+
+
+
+    }
 }
