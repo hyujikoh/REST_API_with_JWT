@@ -1,5 +1,6 @@
 package com.example.rest_api_with_jwt.app.member.service;
 
+import com.example.rest_api_with_jwt.app.cache.dto.Person;
 import com.example.rest_api_with_jwt.app.member.dto.PostLoginReq;
 import com.example.rest_api_with_jwt.app.member.dto.PostLoginRes;
 import com.example.rest_api_with_jwt.app.member.entity.Member;
@@ -94,5 +95,12 @@ public class MemberService {
     public int cachePlus(int i, int i1) {
         System.out.println("a+ b " + i+i1);
         return i+i1;
+    }
+
+
+    @Cacheable(value = "getName", key = "#p.id")
+    public String getName(Person p, int random) {
+        System.out.println("== getName 실행됨 ==");
+        return p.getName();
     }
 }
