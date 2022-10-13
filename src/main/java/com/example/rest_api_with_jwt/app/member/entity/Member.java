@@ -30,6 +30,9 @@ public class Member extends BaseEntity {
     private String password;
     private String email;
 
+    @Column(columnDefinition = "TEXT")
+    private String accessToken;
+
     public Member(long id) {
         super(id);
     }
@@ -42,6 +45,8 @@ public class Member extends BaseEntity {
         LocalDateTime modifyDate = Util.date.bitsToLocalDateTime((List<Integer>)jwtClaims.get("modifyDate"));
         String username = (String)jwtClaims.get("username");
         String email = (String)jwtClaims.get("email");
+
+
 
         return Member
                 .builder()
@@ -58,5 +63,16 @@ public class Member extends BaseEntity {
         authorities.add(new SimpleGrantedAuthority("MEMBER"));
 
         return authorities;
+    }
+
+    public Map<String, Object> getAccessTokenClaims() {
+        return Util.mapOf(
+                "id", getId(),
+                "createDate", getCreateDate(),
+                "modifyDate", getModifyDate(),
+                "username", getUsername(),
+                "email", getEmail(),
+                "authorities", getAuthorities()
+        );
     }
 }
